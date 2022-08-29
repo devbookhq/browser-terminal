@@ -26,6 +26,9 @@
 
 
 .dbk-button {
+  width: 40px;
+  height: 40px;
+
   background: none;
   color: inherit;
   border: none;
@@ -34,18 +37,15 @@
   cursor: pointer;
   outline: inherit;
 
-  position: relative;
-  bottom: 1px;
-  padding: 6px 8px;
   display: flex;
   align-items: center;
-  border-radius: 4px;
-  margin-left: 8px;
-  font-weight: 600;
-  color: white;
+  justify-content: center;
+  font-weight: 400;
+  font-size: 18px;
+  color: #707070;
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.15);
   cursor: pointer;
+  border-radius: 4px;
 
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -53,21 +53,24 @@
 }
 
 .dbk-button:hover {
-  border: 1px solid rgba(255, 255, 255, 1.0);
+  color: white;
+  background: #2e2e2e;
 }
 
 .dbk-terminal {
   padding: 8px 0 2px;
-  position: absolute;
-  top: 0;
+  position: fixed;
+  /*top: 0;*/
   right: 0;
+  left: 0;
   bottom: 0;
-  width: 720px;
+  opacity: 1;
+  height: 320px;
   z-index: 50;
   backdrop-filter: blur(12px);
   background: rgba(0, 0, 0, 0.6);
-  border-left: 1px solid rgb(43, 43, 43);
-  box-shadow: -1px 0 7px 4px rgb(0 0 0 / 20%);
+  border-top: 1px solid rgb(43, 43, 43);
+  box-shadow: 0 0 7px 4px rgb(0 0 0 / 20%);
 
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -75,8 +78,11 @@
 
   display: flex;
   flex-direction: column;
+
+  pointer-events: auto;
 }
 
 .dbk-terminal-hidden {
-  right: -720px;
+  opacity: 0;
+  pointer-events: none;
 }

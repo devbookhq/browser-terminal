@@ -40,7 +40,7 @@ function TerminalButton({
         "
         onClick={() => setIsHidden(val => !val)}
       >
-        Open terminal
+        {`_>`}
       </button>
     </Fragment>
   )

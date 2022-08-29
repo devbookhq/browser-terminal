@@ -98,6 +98,8 @@ function useSession({
         setSessionState(s => s.session === newSession ? { ...s, state: 'closed' } : s)
       },
       debug,
+      __debug_hostname: '127.0.0.1',
+      __debug_devEnv: 'local',
     })
 
     const open = newSession.open()
