@@ -1,5 +1,5 @@
 {
-  "name": "Devbook",
+  "name": "Supabase Local",
   "description": "Instant terminals!",
   "version": "1.0",
   "manifest_version": 3,
@@ -13,5 +13,9 @@
     "activeTab",
     "storage",
     "scripting"
-  ]
+  ],
+  "host_permissions": ["http://localhost:8010/*"],
+  "content_security_policy": {
+    "extension_pages": "script-src http://localhost;  object-src http://localhost;"
+  }
 }
