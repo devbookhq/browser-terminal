@@ -36,17 +36,22 @@ export interface Props {
   onStart?: (handler: Omit<Handler, 'runCmd' | 'stopCmd'>) => (Promise<void> | void)
   onRunningCmdChange: (state: CodeSnippetExecState) => void
   isHidden?: boolean
+
+  currentCmd: string
 }
+
+const clearTerminalSequence = '\x0C'
 
 const Terminal = forwardRef<Handler, Props>(({
   onStart,
   autofocus,
   onRunningCmdChange,
   isHidden,
+  currentCmd,
 }, ref) => {
   const {
     session,
-  } = useSession({ codeSnippetID: 'YG6GSDSZ9Pll' })
+  } = useSession({ codeSnippetID: 'HAJCyVPXslJv' })
 
   const [fitAddon, setFitAddon] = useState<FitAddon>()
   const terminalRef = useRef(null) as MutableRef<HTMLDivElement | null>
@@ -59,7 +64,6 @@ const Terminal = forwardRef<Handler, Props>(({
     isCmdRunning,
     stopCmd,
   } = useTerminal({ terminalManager: session?.terminal })
-
   const onResize = useCallback(() => {
     if (!fitAddon) return
 
@@ -148,6 +152,21 @@ const Terminal = forwardRef<Handler, Props>(({
     handleInput,
     onResize,
   ])
+
+  useEffect(function switchCommand() {
+    if (!currentCmd) return
+    if (!terminalSession) return
+
+    // Clear terminal
+    terminalSession.sendData('\u0003')
+    setTimeout(() => {
+      terminalSession.sendData(clearTerminalSequence)
+    }, 100)
+
+    setTimeout(() => {
+      terminalSession.sendData(`${currentCmd}`)
+    }, 200)
+  }, [currentCmd, terminalSession])
 
   return (
     <Fragment>

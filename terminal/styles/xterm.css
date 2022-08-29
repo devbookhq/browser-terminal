@@ -41,9 +41,11 @@
   user-select: none;
   -ms-user-select: none;
   -webkit-user-select: none;
-  border-radius: 20px;
 
   /* Custom */
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+
 }
 
 .xterm.focus,
@@ -186,7 +188,7 @@
   left: 0;
   top: 0;
   bottom: 0;
-  scrollbar-color: #8F8F8F transparent;
+  scrollbar-color: #fbfbfb transparent;
   scrollbar-width: thin;
 
   /* CUSTOM */
@@ -201,7 +203,7 @@
 }
 
 .xterm-viewport::-webkit-scrollbar-thumb {
-  @apply bg-black-700;
+  @apply bg-white-900/80;
   @apply rounded;
 }
 

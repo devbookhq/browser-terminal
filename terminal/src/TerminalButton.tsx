@@ -13,6 +13,7 @@ function TerminalButton({
 }: Props) {
   const terminalWrapperRef = useRef<HTMLDivElement | null>(null)
   const [isHidden, setIsHidden] = useState(true)
+  const [cmd, setCmd] = useState('')
 
   function  handleClickOutside() {
     console.log('Clicked outside!')
@@ -24,24 +25,43 @@ function TerminalButton({
   return (
     <Fragment>
       <div className={`
-        ${isHidden ? 'dbk-terminal dbk-terminal-hidden' : 'dbk-terminal'}
+        ${isHidden ? 'dbk-terminal-wrapper dbk-terminal-wrapper-hidden' : 'dbk-terminal-wrapper'}
       `}
         ref={terminalWrapperRef}
       >
-        <Terminal
-          onRunningCmdChange={console.log}
-          autofocus={true}
-        />
+        <div className="dbk-header">
+          <div className="dbk-header-btn" onClick={() => setCmd('ssh -oStrictHostKeyChecking=no git.charm.sh')}>
+            Soft Serve
+          </div>
+
+          <div className="dbk-header-btn" onClick={() => setCmd('glow ./README.md')}>
+            Glow
+          </div>
+
+          <div className="dbk-header-btn" onClick={() => setCmd('skate list')}>
+            Skate
+          </div>
+        </div>
+
+        <div className="dbk-terminal">
+          <Terminal
+            onRunningCmdChange={console.log}
+            autofocus={true}
+            currentCmd={cmd}
+          />
+        </div>
       </div>
 
-      <button
-        className="
-          dbk-button
-        "
-        onClick={() => setIsHidden(val => !val)}
-      >
-        Open terminal
-      </button>
+      <div className="dbk-btn-wrapper">
+        <button
+          className="
+            dbk-button
+          "
+          onClick={() => setIsHidden(val => !val)}
+        >
+          Try demos here!
+        </button>
+      </div>
     </Fragment>
   )
 }

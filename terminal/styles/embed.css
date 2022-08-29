@@ -24,6 +24,12 @@
   @apply bg-black-700;
 }
 
+.dbk-btn-wrapper {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 10;
+}
 
 .dbk-button {
   background: none;
@@ -34,15 +40,14 @@
   cursor: pointer;
   outline: inherit;
 
+  font-size: 14px;
   position: relative;
   bottom: 1px;
-  padding: 6px 8px;
+  padding: 4px 6px;
   display: flex;
   align-items: center;
   border-radius: 4px;
-  margin-left: 8px;
-  font-weight: 600;
-  color: white;
+  color: black;
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.15);
   cursor: pointer;
@@ -50,33 +55,69 @@
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
+
+
+
+
+
+  background: #f6f8fa;
+  border: 1px solid #ebeef1;
+  box-shadow: 0px 2px 5px rgb(60 66 87 / 8%), 0px 1px 1px rgb(0 0 0 / 12%);
 }
 
-.dbk-button:hover {
-  border: 1px solid rgba(255, 255, 255, 1.0);
+.dbk-terminal-wrapper {
+  padding: 8px 0 2px;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  position: absolute;
+  opacity: 1;
+  position: fixed;
+  top: 410px;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 50;
+
+  display: flex;
+  flex-direction: column;
+  pointer-events: auto;
+}
+
+.dbk-terminal-wrapper-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.dbk-header {
+  width: 100%;
+  display: flex;
+  gap: 16px;
+  padding: 4px 12px;
+  background: white;
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 7px 4px rgb(0 0 0 / 20%);
+}
+
+.dbk-header-btn {
+  font-size: 14px;
+  font-weight: 500;
+  color: #3c4257;
+  cursor: pointer;
+}
+
+.dbk-header-btn:hover {
+  color: #ff6dff;
 }
 
 .dbk-terminal {
-  padding: 8px 0 2px;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 720px;
-  z-index: 50;
+  padding-top: 6px;
+  display: flex;
+  flex: 1;
   backdrop-filter: blur(12px);
-  background: rgba(0, 0, 0, 0.6);
-  border-left: 1px solid rgb(43, 43, 43);
-  box-shadow: -1px 0 7px 4px rgb(0 0 0 / 20%);
+  background: rgba(7, 8, 28, 0.9);
+  border-top: 1px solid rgb(43, 43, 43);
 
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
-
-  display: flex;
-  flex-direction: column;
-}
-
-.dbk-terminal-hidden {
-  right: -720px;
 }
