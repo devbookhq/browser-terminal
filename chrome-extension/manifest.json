@@ -1,0 +1,17 @@
+{
+  "name": "Devbook",
+  "description": "Instant terminals!",
+  "version": "1.0",
+  "manifest_version": 3,
+  "action": {
+    "default_title": "Click to add terminal"
+  },
+  "background": {
+    "service_worker": "dist/background.mjs"
+  },
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting"
+  ]
+}
