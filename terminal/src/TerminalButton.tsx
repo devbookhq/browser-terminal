@@ -22,26 +22,30 @@ function TerminalButton({
   useOnClickOutside(terminalWrapperRef, handleClickOutside)
 
   return (
-    <Fragment>
+<Fragment>
       <div className={`
-        ${isHidden ? 'dbk-terminal dbk-terminal-hidden' : 'dbk-terminal'}
+        ${isHidden ? 'dbk-terminal-wrapper dbk-terminal-wrapper-hidden' : 'dbk-terminal-wrapper'}
       `}
         ref={terminalWrapperRef}
       >
-        <Terminal
-          onRunningCmdChange={console.log}
-          autofocus={true}
-        />
+        <div className="dbk-terminal">
+          <Terminal
+            onRunningCmdChange={console.log}
+            autofocus={true}
+          />
+        </div>
       </div>
 
-      <button
-        className="
-          dbk-button
-        "
-        onClick={() => setIsHidden(val => !val)}
-      >
-        {`_>`}
-      </button>
+      <div className="dbk-btn-wrapper">
+        <button
+          className="
+            dbk-button
+          "
+          onClick={() => setIsHidden(val => !val)}
+        >
+          {`_>`}
+        </button>
+      </div>
     </Fragment>
   )
 }
