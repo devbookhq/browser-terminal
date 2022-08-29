@@ -8,5 +8,5 @@ const btn = createIsland(TerminalButton)
 btn.render({
   initialProps: {
   },
-  selector: '#__docusaurus',
+  selector: 'root',
 })

@@ -1,6 +1,6 @@
 {
-  "name": "Supabase Local",
-  "description": "Instant terminals!",
+  "name": "Devbook Browser Terminal",
+  "description": "Bring your local terminal to any website",
   "version": "1.0",
   "manifest_version": 3,
   "action": {
