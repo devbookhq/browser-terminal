@@ -8,5 +8,5 @@ const btn = createIsland(TerminalButton)
 btn.render({
   initialProps: {
   },
-  selector: 'root',
+  selector: 'body',
 })
