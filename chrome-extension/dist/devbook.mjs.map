@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../src/devbook.ts"],
-  "sourcesContent": ["// import injectScript from '../../terminal/dist/script.inject'\n\n\nconsole.log('Hello', document)"],
-  "mappings": ";AAGA,QAAQ,IAAI,SAAS,QAAQ;",
-  "names": []
-}

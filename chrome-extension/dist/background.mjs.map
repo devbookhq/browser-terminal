@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../src/background.ts"],
-  "sourcesContent": ["chrome.action.onClicked.addListener((tab) => {\n  chrome.scripting.executeScript({\n    target: { tabId: tab.id! },\n    files: ['dist/devbook.js']\n  })\n})"],
-  "mappings": ";AAAA,OAAO,OAAO,UAAU,YAAY,CAAC,QAAQ;AAC3C,SAAO,UAAU,cAAc;AAAA,IAC7B,QAAQ,EAAE,OAAO,IAAI,GAAI;AAAA,IACzB,OAAO,CAAC,iBAAiB;AAAA,EAC3B,CAAC;AACH,CAAC;",
-  "names": []
-}
