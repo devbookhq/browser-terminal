@@ -6,9 +6,7 @@ import TerminalButton from './TerminalButton'
 
 const btn = createIsland(TerminalButton)
 btn.render({
-  initialProps: {
-  },
-  //selector: 'body',
-  selector: '#dbk',
+  initialProps: { },
+  selector: 'body',
   // inline: true
 })

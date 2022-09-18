@@ -5,6 +5,7 @@ import '../styles/embed.css'
 
 import Terminal, { Handler } from './Terminal'
 import useOnClickOutside from './useOnClickOutside'
+import useEventListener from './useEventListener'
 
 export interface Props {
 }
@@ -16,21 +17,37 @@ function TerminalButton({
   const [isHidden, setIsHidden] = useState(true)
 
   function handleClickOutside() {
-    console.log('Clicked outside!')
     setIsHidden(true)
   }
   function onTerminalButtonClick() {
     setIsHidden(val => !val)
+    //terminalRef?.current?.handleInput('')
+    setTimeout(() => {
+      terminalRef.current?.focus()
+    }, 150)
   }
 
+  useEventListener('keydown', e => {
+    if (e.code === 'Backquote') {
+      setIsHidden(false)
+      setTimeout(() => {
+        terminalRef.current?.focus()
+      }, 150)
+    }
+  })
+
   useOnClickOutside(terminalWrapperRef, handleClickOutside)
+
   return (
     <Fragment>
-      <div className={`
+ <div className={`
         ${isHidden ? 'dbk-terminal-wrapper dbk-terminal-wrapper-hidden' : 'dbk-terminal-wrapper'}
       `}
         ref={terminalWrapperRef}
       >
+        <div className="dbk-header">
+        </div>
+
         <div className="dbk-terminal">
           <Terminal
             ref={terminalRef}
@@ -47,7 +64,7 @@ function TerminalButton({
           "
           onClick={onTerminalButtonClick}
         >
-          <span className="font-mono font-bold text-lg text-green-500 mr-2">{`[)`}</span>{`Install with Devbook`}
+          {`>_`}
         </button>
       </div>
     </Fragment>
