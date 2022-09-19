@@ -1,24 +1,34 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
+    "jsx": "react",
+    "target": "es2017",
     "lib": [
+      "dom",
+      "dom.iterable",
       "esnext"
     ],
-    "types": ["chrome"],
-    "moduleResolution": "node",
-    "strict": true,
-    "noEmit": true,
+    "allowJs": true,
+    "skipLibCheck": true,
     "esModuleInterop": true,
-    "baseUrl": "./",
-    "paths": {
-      "@/*": [
-        "src/*"
-      ]
-    }
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "declaration": false,
+    "jsxFactory": "h",
+    "jsxFragmentFactory": "",
+    "noEmit": true
   },
   "include": [
+    "src",
     "src/**/*",
-    "inject.d.ts",
+    "declaration.d.ts"
+  ],
+  "exclude": [
+    "src/background.ts",
+    "**/tests/**"
   ]
 }

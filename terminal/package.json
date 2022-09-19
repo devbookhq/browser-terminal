@@ -4,8 +4,7 @@
   "source": "src/inline.ts",
   "browser": "dist/bundle.js",
   "scripts": {
-    "build": "rm -rf dist/* && rollup -c && cp ./dist/inline.js ../chrome-extension/dist/devbook.js",
-    "dev": "vite"
+    "build": "rm -rf dist/* && rollup -c && cp ./dist/inline.js ../chrome-extension/dist/devbook.js"
   },
   "files": [
     "dist"
@@ -22,7 +21,6 @@
     "xterm-addon-web-links": "^0.6.0"
   },
   "devDependencies": {
-    "@prefresh/vite": "^2.2.8",
     "@rollup/plugin-commonjs": "^22.0.0",
     "@rollup/plugin-node-resolve": "^13.3.0",
     "@types/isomorphic-fetch": "^0.0.36",
@@ -37,7 +35,6 @@
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.32.1",
     "tailwindcss": "^3.0.24",
-    "typescript": "^4.7.3",
-    "vite": "^2.9.10"
+    "typescript": "^4.7.3"
   }
 }

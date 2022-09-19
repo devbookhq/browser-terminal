@@ -1,6 +1,6 @@
 {
   "name": "Devbook Browser Terminal",
-  "description": "Bring your local terminal to any website",
+  "description": "Access your local terminal from any website",
   "version": "1.0",
   "manifest_version": 3,
   "action": {
