@@ -8,7 +8,7 @@
   "license": "ISC",
   "scripts": {
     "build": "node build.extension.js && rollup -c && cp ./manifest.json ./dist",
-    "archive": "tar -czvf dist.tar.gz dist"
+    "archive": "tar -czvf devbook-browser-terminal.tar.gz dist"
   },
   "dependencies": {
     "@devbookhq/sdk": "^2.4.4",
