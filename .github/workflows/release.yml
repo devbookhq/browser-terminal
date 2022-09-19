@@ -1,0 +1,26 @@
+name: Release
+
+on:
+  push:
+    tags: [v*.*.*]
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          fetch-depth: 0
+          node-version: 16
+      - name: Install deps
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Archive build
+        run: npm run archive
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist.tar.gz

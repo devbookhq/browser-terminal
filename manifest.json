@@ -7,7 +7,7 @@
     "default_title": "Click to add terminal"
   },
   "background": {
-    "service_worker": "dist/background.mjs"
+    "service_worker": "background.mjs"
   },
   "permissions": [
     "activeTab",

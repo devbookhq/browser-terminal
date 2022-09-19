@@ -1,10 +1,4 @@
-const path = require('path')
-const { fileURLToPath } = require('url')
 const { build } = require('esbuild')
-
-//const filename = fileURLToPath(import.meta.url)
-//const dirname = path.dirname(filename)
-
 
 build({
   tsconfig: './tsconfig.extension.json',
