@@ -3,7 +3,6 @@ import {
   useEffect,
   useMemo,
   useState,
-  useId,
 } from 'preact/hooks'
 import type { Terminal as XTermTerminal } from 'xterm'
 import {
@@ -14,8 +13,6 @@ import {
 
 import { createDeferredPromise } from './createDeferredPromise'
 import usePort from './usePort'
-//import useTabState from './useTabState'
-//import useTerminalId from './useTerminalId'
 
 export const newLine = '\n'
 
@@ -85,7 +82,6 @@ function useTerminal({
   terminalManager,
 }: Opts) {
   const { isTabActive, terminalId } = usePort()
-
   const [sessionDataProxy, setSessionDataProxy] = useState<SessionDataProxy>()
   const [terminal, setTerminal] = useState<XTermTerminal>()
   const [terminalSession, setTerminalSession] = useState<TerminalSession>()
