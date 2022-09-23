@@ -7,6 +7,10 @@ import Terminal, { Handler } from './Terminal'
 import useOnClickOutside from './useOnClickOutside'
 import useEventListener from './useEventListener'
 
+import {
+  PortContextProvider,
+} from './usePort'
+
 export interface Props {
 }
 
@@ -27,20 +31,20 @@ function TerminalButton({
     }, 150)
   }
 
-  useEventListener('keydown', e => {
-    if (e.code === 'Backquote') {
-      setIsHidden(false)
-      setTimeout(() => {
-        terminalRef.current?.focus()
-      }, 150)
-    }
-  })
+  //useEventListener('keydown', e => {
+  //  if (e.code === 'Backquote') {
+  //    setIsHidden(false)
+  //    setTimeout(() => {
+  //      terminalRef.current?.focus()
+  //    }, 150)
+  //  }
+  //})
 
   useOnClickOutside(terminalWrapperRef, handleClickOutside)
 
   return (
-    <Fragment>
- <div className={`
+    <PortContextProvider>
+      <div className={`
         ${isHidden ? 'dbk-terminal-wrapper dbk-terminal-wrapper-hidden' : 'dbk-terminal-wrapper'}
       `}
         ref={terminalWrapperRef}
@@ -67,7 +71,7 @@ function TerminalButton({
           {`>_`}
         </button>
       </div>
-    </Fragment>
+    </PortContextProvider>
   )
 }
 

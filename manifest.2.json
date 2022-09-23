@@ -12,9 +12,6 @@
       "js": ["devbook.js"]
     }
   ],
-  "background": {
-    "service_worker": "background.mjs"
-  },
   "permissions": [
     "activeTab",
     "storage",

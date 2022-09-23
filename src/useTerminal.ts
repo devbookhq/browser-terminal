@@ -3,6 +3,7 @@ import {
   useEffect,
   useMemo,
   useState,
+  useId,
 } from 'preact/hooks'
 import type { Terminal as XTermTerminal } from 'xterm'
 import {
@@ -10,7 +11,11 @@ import {
   TerminalSession,
   ChildProcess,
 } from '@devbookhq/sdk'
+
 import { createDeferredPromise } from './createDeferredPromise'
+import usePort from './usePort'
+//import useTabState from './useTabState'
+//import useTerminalId from './useTerminalId'
 
 export const newLine = '\n'
 
@@ -67,23 +72,10 @@ export async function createTerminalProcess(
   }
 }
 
-//
-// == For local debugging of the terminal ==
-//
-// term.writeln('$ ')
-// term.focus()
-// term.onKey(function (key, ev) {
-//   if (key.key === '\r') {
-//     term.writeln('$')
-//   } else {
-//     term.write(key.key)
-//   }
-// })
-// setTerminal(term)
-// return
-//
-// ====
-//
+interface SessionDataProxy {
+  onDataHandler?: (data: string) => void
+  onData: (data: string) => void
+}
 
 export interface Opts {
   terminalManager?: TerminalManager
@@ -92,6 +84,9 @@ export interface Opts {
 function useTerminal({
   terminalManager,
 }: Opts) {
+  const { isTabActive, terminalId } = usePort()
+
+  const [sessionDataProxy, setSessionDataProxy] = useState<SessionDataProxy>()
   const [terminal, setTerminal] = useState<XTermTerminal>()
   const [terminalSession, setTerminalSession] = useState<TerminalSession>()
   const [error, setError] = useState<string>()
@@ -119,6 +114,28 @@ function useTerminal({
     terminalManager,
   ])
 
+  useEffect(function resizeTerminalOnActiveTab() {
+    if (!isTabActive) return
+    if (!terminal) return
+    console.log('Resizing terminal', { cols: terminal.cols, rows: terminal.rows })
+    terminal.resize(terminal.cols, terminal.rows)
+  }, [isTabActive, terminal])
+
+  useEffect(function toggleTerminalWriteDataOnActiveTab() {
+    if (!isTabActive) {
+      if (!sessionDataProxy) return
+      sessionDataProxy.onDataHandler = undefined
+    } else {
+      if (!sessionDataProxy) return
+      if (!terminal) return
+      sessionDataProxy.onDataHandler = data => terminal.write(data)
+    }
+
+    return () => {
+      sessionDataProxy.onDataHandler = undefined
+    }
+  }, [isTabActive, terminal, sessionDataProxy])
+
   useEffect(function initialize() {
     async function init() {
       if (!terminalManager) return
@@ -142,8 +159,18 @@ function useTerminal({
       })
 
       try {
+        const newProxy: SessionDataProxy = {
+          onDataHandler: data => term.write(data),
+          onData: (data: string) => {
+            newProxy.onDataHandler?.(data)
+          },
+        }
+
+        console.log('Creating new terminal session', terminalId)
         const session = await terminalManager.createSession({
-          onData: (data) => term.write(data),
+          activeTerminalID: terminalId,
+          //onData: (data) => term.write(data),
+          onData: data => newProxy.onData(data),
           onChildProcessesChange: setChildProcesss,
           size: { cols: term.cols, rows: term.rows },
         })
@@ -151,12 +178,14 @@ function useTerminal({
         term.onData((data) => session.sendData(data))
         term.onResize((size) => session.resize(size))
 
+        setSessionDataProxy(newProxy)
         setTerminal(term)
         setTerminalSession(session)
         setError(undefined)
         setIsLoading(false)
 
         return () => {
+          newProxy.onDataHandler = undefined
           term.dispose()
           session.destroy()
           setTerminal(undefined)
@@ -169,6 +198,8 @@ function useTerminal({
       }
     }
 
+    console.log('Terminal ID', { terminalId })
+    if (!terminalId) return
     const disposePromise = init()
 
     return () => {
@@ -176,7 +207,10 @@ function useTerminal({
       setRunningProcessCmd(undefined)
       disposePromise.then((dispose) => dispose?.())
     }
-  }, [terminalManager])
+  }, [
+    terminalManager,
+    terminalId,
+  ])
 
   useEffect(function executeCmd() {
     if (!cmd.wasExecuted && cmd.cmdContent && terminalSession) {

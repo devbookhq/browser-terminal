@@ -28,7 +28,7 @@
   position: fixed;
   bottom: 24px;
   right: 24px;
-  z-index: 10;
+  z-index: 50;
 }
 
 .dbk-button {
@@ -48,20 +48,14 @@
   align-items: center;
   border-radius: 4px;
   color: black;
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.15);
   cursor: pointer;
 
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 
-
-
-
-
   background: #f6f8fa;
-  border: 1px solid #ebeef1;
+  border: 1px solid black;
   box-shadow: 0px 2px 5px rgb(60 66 87 / 8%), 0px 1px 1px rgb(0 0 0 / 12%);
 }
 

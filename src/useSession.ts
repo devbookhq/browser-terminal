@@ -14,7 +14,7 @@ import { useIdleTimer } from 'react-idle-timer'
 
 import { createDeferredPromise } from './createDeferredPromise'
 
-export const rootdir = '/code'
+export const rootdir = '/'
 
 export async function createSessionProcess(
   cmd: string,
@@ -166,7 +166,6 @@ function useSession({
       result.then(r => r?.close?.())
     }
   }, [initSession])
-
 
   return {
     refresh,
