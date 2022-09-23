@@ -192,8 +192,11 @@
   scrollbar-width: thin;
 
   /* CUSTOM */
-  @apply overflow-auto;
-  @apply inset-2;
+  overflow: auto;
+  top: 0.5rem; /* 8px */
+  right: 0.5rem; /* 8px */
+  bottom: 0.5rem; /* 8px */
+  left: 0.5rem; /* 8px */
 }
 
 .xterm-viewport::-webkit-scrollbar {
@@ -203,10 +206,10 @@
 }
 
 .xterm-viewport::-webkit-scrollbar-thumb {
-  @apply bg-white-900/80;
-  @apply rounded;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 0.25rem; /* 4px */
 }
 
 .xterm-viewport::-webkit-scrollbar-corner {
-  @apply bg-transparent;
+  background: transparent;
 }

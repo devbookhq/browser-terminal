@@ -1,4 +1,4 @@
-@import "./codemirror.css";
+/*@import "./codemirror.css";*/
 @import "./xterm.css";
 
 @tailwind base;
@@ -6,22 +6,23 @@
 @tailwind utilities;
 
 .cs-output {
-  @apply overflow-auto;
+  overflow: auto;
   /* Firefox scrollbar styling */
   scrollbar-color: #8F8F8F transparent;
   scrollbar-width: thin;
 }
 
 .cs-output::-webkit-scrollbar {
-  @apply h-[10px] w-[10px];
+  height: 10px;
+  width: 10px;
 }
 
 .cs-output::-webkit-scrollbar-corner {
-  @apply bg-transparent;
+  background: transparent;
 }
 
 .cs-output::-webkit-scrollbar-thumb {
-  @apply bg-black-700;
+  background: #313034;
 }
 
 .dbk-btn-wrapper {
