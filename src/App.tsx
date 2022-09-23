@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { h, Fragment } from 'preact'
 import { useState, useRef } from 'preact/hooks'
-import '../styles/embed.css'
+import '../styles/app.css'
 
 import Terminal, { Handler } from './Terminal'
 import useOnClickOutside from './useOnClickOutside'
