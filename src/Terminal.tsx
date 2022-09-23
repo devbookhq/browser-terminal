@@ -18,10 +18,9 @@ import {
 import { useResizeDetector } from 'react-resize-detector'
 import type { FitAddon } from 'xterm-addon-fit'
 
+import '../styles/terminal.css'
 import useTerminal from './useTerminal'
 import useSession from './useSession'
-import Text from './Text'
-import SpinnerIcon from './Spinner'
 
 export interface Handler {
   handleInput: (input: string) => void
@@ -173,64 +172,27 @@ const Terminal = forwardRef<Handler, Props>(({
     onResize,
   ])
 
+  // TODO: Handle loading and errMessage
   return (
     <Fragment>
-      {errMessage && (
-        <div className={cn(
-          'flex-1',
-          { flex: !isHidden },
-          { hidden: isHidden },
-          'justify-center',
-          'items-center',
-          'bg-black-850',
-          'lg:rounded-b-xl',
-        )}>
-          <Text
-            className="text-red-400"
-            size={Text.size.S2}
-            text={errMessage}
-          />
-        </div>
-      )}
-
-      {isLoading && !errMessage && (
-        <div className={cn(
-          'flex-1',
-          { 'flex': !isHidden },
-          { 'hidden': isHidden },
-          'justify-center',
-          'items-center',
-          'bg-black-850',
-          'lg:rounded-b-xl',
-        )}>
-          <SpinnerIcon />
-        </div>
-      )}
-
-      {!isLoading && !errMessage && (
-        <div className={cn(
-          'flex-1',
-          { 'hidden': isHidden },
-          'relative',
-          'bg-black-850',
-          'lg:rounded-b-xl',
-        )}>
-          {/*
-          * We assign the `sizeRef` and the `terminalRef` to a child element intentionally
-          * because the fit addon for xterm.js resizes the terminal based on the PARENT'S size.
-          * The child element MUST have set the same width and height of it's parent, hence
-          * the `w-full` and `h-full`.
-          */}
-          <div
-            className="
-              absolute
-              w-full
-              h-full
-            "
-            ref={assignRefs}
-          />
-        </div>
-      )}
+      <div className={cn(
+        'dbk-size-terminal-wrapper',
+        { 'dbk-terminal-size-wrapper-visible': !isHidden },
+        { 'dbk-terminal-size-wrapper-hidden': isHidden },
+      )}>
+        {/*
+        * We assign the `sizeRef` and the `terminalRef` to a child element intentionally
+        * because the fit addon for xterm.js resizes the terminal based on the PARENT'S size.
+        * The child element MUST have set the same width and height of it's parent, hence
+        * the `w-full` and `h-full`.
+        */}
+        <div
+          className="
+            dbk-terminal-el
+          "
+          ref={assignRefs}
+        />
+      </div>
     </Fragment>
   )
 })

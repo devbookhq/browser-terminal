@@ -5,7 +5,6 @@ import '../styles/embed.css'
 
 import Terminal, { Handler } from './Terminal'
 import useOnClickOutside from './useOnClickOutside'
-import useEventListener from './useEventListener'
 
 import {
   PortContextProvider,
@@ -45,7 +44,7 @@ function TerminalButton({
   return (
     <PortContextProvider>
       <div className={`
-        ${isHidden ? 'dbk-terminal-wrapper dbk-terminal-wrapper-hidden' : 'dbk-terminal-wrapper'}
+        ${isHidden ? 'dbk-app dbk-app-hidden' : 'dbk-app'}
       `}
         ref={terminalWrapperRef}
       >

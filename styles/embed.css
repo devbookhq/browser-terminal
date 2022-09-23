@@ -1,9 +1,10 @@
-/*@import "./codemirror.css";*/
 @import "./xterm.css";
 
+/*
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+*/
 
 .cs-output {
   overflow: auto;
@@ -60,7 +61,7 @@
   box-shadow: 0px 2px 5px rgb(60 66 87 / 8%), 0px 1px 1px rgb(0 0 0 / 12%);
 }
 
-.dbk-terminal-wrapper {
+.dbk-app {
   padding: 8px 0 2px;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
@@ -78,7 +79,7 @@
   pointer-events: auto;
 }
 
-.dbk-terminal-wrapper-hidden {
+.dbk-app-hidden {
   opacity: 0;
   pointer-events: none;
 }
