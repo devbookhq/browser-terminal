@@ -69,14 +69,10 @@ export interface Opts {
 
 function useSession({
   /**
-   * If the `codeSnippetID` is undefined the session will not be initialized.
-   */
-  codeSnippetID,
-  /**
    * If enabled, the edits to a VM's filesystem will be saved for the next session.
    */
   debug,
-}: Opts) {
+}: Opts | undefined = { debug: true }) {
   const [sessionState, setSessionState] = useState<{
     session?: Session,
     state: SessionState,
@@ -84,10 +80,8 @@ function useSession({
     open?: Promise<void>
   }>({ state: 'closed' })
   const initSession = useCallback(async () => {
-    if (!codeSnippetID) return
-
     const newSession = new Session({
-      id: codeSnippetID,
+      id: 'placeholder',
       onDisconnect() {
         setSessionState(s => s.session === newSession ? { ...s, state: 'closed' } : s)
       },
@@ -109,7 +103,7 @@ function useSession({
       oldState.session?.close().catch((err) => {
         console.error(err)
       })
-      return { session: newSession, state: 'opening', id: codeSnippetID, open }
+      return { session: newSession, state: 'opening', id: 'placeholder', open }
     })
 
     await open
@@ -119,7 +113,6 @@ function useSession({
     return { session: newSession, close }
   }, [
     debug,
-    codeSnippetID,
   ])
 
   const onIdle = useCallback(() => {

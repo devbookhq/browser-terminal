@@ -45,7 +45,7 @@ const Terminal = forwardRef<Handler, Props>(({
 }, ref) => {
   const {
     session,
-  } = useSession({ codeSnippetID: 'YG6GSDSZ9Pll' })
+  } = useSession()
 
   const [fitAddon, setFitAddon] = useState<FitAddon>()
   const terminalRef = useRef(null) as MutableRef<HTMLDivElement | null>
@@ -130,30 +130,6 @@ const Terminal = forwardRef<Handler, Props>(({
     terminal,
     autofocus,
   ])
-
-  //useEffect(function onActiveTab() {
-  //  if (!terminal) return
-  //  if (!terminalSession) return
-  //  console.log('Resizing', terminal.cols, terminal.rows)
-  //  terminalSession.resize({ cols: terminal.cols, rows: terminal.rows })
-
-  //  //function handleMsg(msg: any) {
-  //  //  console.log('Message from extension', msg)
-  //  //  if (!terminal) return
-  //  //  if (!terminalSession) return
-  //  //  if (msg.type == 'activeTab') {
-  //  //    console.log('Resizing', terminal.cols, terminal.rows)
-  //  //    terminalSession.resize({ cols: terminal.cols, rows: terminal.rows })
-  //  //  }
-  //  //}
-
-  //  //const port = chrome.runtime.connect({ name: 'dbk' })
-  //  //port.onMessage.addListener(handleMsg)
-  //  //return () => {
-  //  //  port.onMessage.removeListener(handleMsg)
-  //  //  port.disconnect()
-  //  //}
-  //}, [terminal, terminalSession])
 
   useEffect(function handleOnStart() {
     if (!onStart) return
