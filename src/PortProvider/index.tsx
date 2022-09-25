@@ -12,8 +12,8 @@ import {
 
 import usePortConnection from './usePortConnection'
 import usePortMessage, {
-  MessageHandler,
-  MessageRegisterHandler,
+  MessageListener,
+  ListenterAddedHandler,
 } from './usePortMessage'
 
 export interface Props {
@@ -36,19 +36,19 @@ export function PortContextProvider({ children }: Props) {
   const [isTabActive, setIsTabActive] = useState<boolean>()
   const [tabId, setTabId] = useState<number>()
 
-  const handleRegistration = useCallback<MessageHandler>((msg) => {
+  const handleRegistration = useCallback<MessageListener>((msg) => {
     if (msg.terminalId !== undefined) setTerminalId(msg.terminalId)
     if (msg.tabId !== undefined) setTabId(msg.tabId)
     if (msg.type === 'activated') setIsTabActive(true)
     if (msg.type === 'deactivated') setIsTabActive(false)
   }, [])
 
-  const triggerRegistration = useCallback<MessageRegisterHandler>((port) => port.postMessage({ type: 'register' }), [])
+  const triggerRegistration = useCallback<ListenterAddedHandler>((port) => port.postMessage({ type: 'register' }), [])
 
   usePortMessage({
     port,
     onMessage: handleRegistration,
-    onMessageRegister: triggerRegistration,
+    onListenerAdded: triggerRegistration,
   })
 
   const value = useMemo(() => {
@@ -74,7 +74,7 @@ export function PortContextProvider({ children }: Props) {
 }
 
 export interface UsePortOpts {
-  onMessage?: MessageHandler
+  onMessage?: MessageListener
 }
 
 // We should pass function wrapped in `useCallback` here so it is not reregistered on every rerender.

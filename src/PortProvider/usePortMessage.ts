@@ -2,33 +2,33 @@ import {
   useEffect,
 } from 'preact/hooks'
 
-export type MessageHandler<T = any> = (data: T) => void
-export type MessageRegisterHandler = (port: chrome.runtime.Port) => void
+export type MessageListener<T = any> = (data: T) => void
+export type ListenterAddedHandler = (port: chrome.runtime.Port) => void
 
 export interface Opts {
   port?: chrome.runtime.Port
-  onMessage?: MessageHandler
-  onMessageRegister?: MessageRegisterHandler
+  onMessage?: MessageListener
+  onListenerAdded?: ListenterAddedHandler
 }
 
 function usePortMessage({
   port,
   onMessage,
-  onMessageRegister,
+  onListenerAdded,
 }: Opts) {
   useEffect(function registerHandler() {
     if (!port) return
     if (!onMessage) return
 
     port.onMessage.addListener(onMessage)
-    onMessageRegister?.(port)
+    onListenerAdded?.(port)
 
     return () => {
       port.onMessage.removeListener(onMessage)
     }
   }, [
     port,
-    onMessageRegister,
+    onListenerAdded,
     onMessage,
   ])
 }
