@@ -6,7 +6,7 @@ import '../styles/app.css'
 import Terminal, { Handler } from './Terminal'
 import useOnClickOutside from './useOnClickOutside'
 
-import usePort from './usePort'
+import usePort from './PortProvider'
 
 export interface Props {
 }

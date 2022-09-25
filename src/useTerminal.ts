@@ -11,7 +11,7 @@ import {
   ChildProcess,
 } from '@devbookhq/sdk'
 
-import usePort from './usePort'
+import usePort from './PortProvider'
 
 export const newLine = '\n'
 
