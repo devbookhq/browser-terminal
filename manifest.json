@@ -9,7 +9,7 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["devbook.js"]
+      "js": ["index.js"]
     }
   ],
   "background": {

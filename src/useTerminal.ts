@@ -51,7 +51,7 @@ export async function createTerminalProcess(
 
   await term.sendData(cmd + newLine)
 
-  // Ensure that even if the command finished so quickly that it was not reported from the env this function finsihes
+  // Ensure that even if the command finished so quickly that it was not reported from the env this function finishes.
   setTimeout(() => {
     hasStarted = true
     if (!isRunning) {
@@ -164,7 +164,7 @@ function useTerminal({
 
         console.log('Creating new terminal session', terminalId)
         const session = await terminalManager.createSession({
-          activeTerminalID: terminalId,
+          terminalID: terminalId,
           //onData: (data) => term.write(data),
           onData: data => newProxy.onData(data),
           onChildProcessesChange: setChildProcesss,
@@ -172,7 +172,10 @@ function useTerminal({
         })
 
         term.onData((data) => session.sendData(data))
-        term.onResize((size) => session.resize(size))
+        term.onResize((size) => {
+          console.log('onResize', { size })
+          session.resize(size)
+        })
 
         setSessionDataProxy(newProxy)
         setTerminal(term)
@@ -183,7 +186,6 @@ function useTerminal({
         return () => {
           newProxy.onDataHandler = undefined
           term.dispose()
-          session.destroy()
           setTerminal(undefined)
         }
       } catch (err: any) {

@@ -5,7 +5,7 @@ import {
 chrome.action.onClicked.addListener(tab => {
   //chrome.scripting.executeScript({
   //  target: { tabId: tab.id! },
-  //  files: ['devbook.js']
+  //  files: ['index.js']
   //})
 })
 
@@ -15,7 +15,7 @@ chrome.action.onClicked.addListener(tab => {
 //  console.log('TAB UPDATED', tabId)
 //  chrome.scripting.executeScript({
 //    target: { tabId },
-//    files: ['dist/devbook.js']
+//    files: ['index.js']
 //  })
 //})
 //
@@ -23,21 +23,43 @@ chrome.action.onClicked.addListener(tab => {
 const ports = new Map<number, chrome.runtime.Port>()
 let terminalId = ''
 
+
 function notifyActiveTab(tabId: number) {
   console.log('Tab activated', tabId)
 
   const port = ports.get(tabId)
   if (!port) {
-    throw new Error(`Tab '${tabId}' activated but has no associated port with it`)
+    console.log(`Tab '${tabId}' activated but has no associated port with it`)
+    return
   }
 
+  // Notify others ports (tabs) to deactivate.
+  console.log('Will go through all other tabs to deactivate them. Tab count to go through:', ports.size)
   ports.forEach((p, tid) => {
     if (tid !== tabId) {
+      console.log(`Deactivating tab '${tid}'`)
       p.postMessage({ type: 'deactivated' })
     }
   })
   port.postMessage({ type: 'activated' })
 }
+
+function openTerminal(tabId: number) {
+  const port = ports.get(tabId)
+  if (!port) {
+    console.log(`Tab '${tabId}' has no associated port with it`)
+    return
+  }
+  port.postMessage({ type: 'open' })
+}
+
+chrome.action.onClicked.addListener(tab => {
+  if (!tab.id) {
+    console.log('Cannot open terminal, tab has not ID')
+    return
+  }
+  openTerminal(tab.id)
+})
 
 const session = new Session({
   id: 'placeholder',
@@ -73,8 +95,8 @@ chrome.windows.onFocusChanged.addListener(async (windowId) => {
 
   const tabId = tab.id
   if (!tabId) {
-    console.log({activeTab: tab})
-    throw new Error('Chrome windows focus has changed but new active tab has no ID')
+    console.log('Chrome windows focus has changed but new active tab has no ID', { activeTab: tab })
+    return
   }
 
   notifyActiveTab(tabId)
@@ -102,7 +124,7 @@ chrome.runtime.onConnect.addListener(port => {
   port.onMessage.addListener(msg => {
     console.log('Received message on port', { portName: port.name, tabId: port.sender?.tab?.id, msg })
     if (msg.type === 'register') {
-      port.postMessage({ terminalId })
+      port.postMessage({ terminalId, tabId })
 
       // TODO: I'm not sure if this is necessary because `chrome.tabs.onActivated` might trigger.
       ports.forEach((p, tid) => {
@@ -110,7 +132,10 @@ chrome.runtime.onConnect.addListener(port => {
           p.postMessage({ type: 'deactivated' })
         }
       })
-      port.postMessage({ type: 'activated' })
+
+      setTimeout(() => {
+        port.postMessage({ type: 'activated' })
+      }, 100)
     }
   })
 })

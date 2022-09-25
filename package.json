@@ -2,7 +2,7 @@
   "name": "devbook-browser-terminal",
   "description": "",
   "version": "1.0.0",
-  "source": "src/devbook.ts",
+  "source": "src/index.tsx",
   "keywords": [],
   "author": "Devbook",
   "license": "ISC",
@@ -11,7 +11,7 @@
     "archive": "tar -czvf devbook-browser-terminal.tar.gz dist"
   },
   "dependencies": {
-    "@devbookhq/sdk": "^2.4.4",
+    "@devbookhq/sdk": "^2.5.0",
     "classnames": "^2.3.1",
     "preact": "^10.11.0",
     "preact-island": "^1.0.4",

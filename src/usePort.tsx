@@ -10,6 +10,7 @@ import {
   useId,
   useCallback,
   useContext,
+  useMemo,
 } from 'preact/hooks'
 export type MessageListener = (data: any) => void
 
@@ -20,6 +21,7 @@ interface Props {
 interface ReturnValue {
   port?: chrome.runtime.Port
   terminalId?: string
+  tabId?: number
   isTabActive?: boolean
 }
 
@@ -30,16 +32,17 @@ export function PortContextProvider({ children }: Props) {
   const [port, setPort] = useState<chrome.runtime.Port>()
   const [terminalId, setTerminalId] = useState<string>()
   const [isTabActive, setIsTabActive] = useState<boolean>()
+  const [tabId, setTabId] = useState<number>()
 
   const messageHandler = useCallback((msg: any) => {
     console.log('Message handler', msg)
     if (msg.terminalId) setTerminalId(msg.terminalId)
+    if (msg.tabId) setTabId(msg.tabId)
     if (msg.type === 'activated') setIsTabActive(true)
     if (msg.type === 'deactivated') setIsTabActive(false)
   }, [])
 
   useEffect(function connect() {
-    console.log('Will connect to port', portId)
     const p = chrome.runtime.connect({ name: portId })
     p.onMessage.addListener(messageHandler)
     p.postMessage({ type: 'register' })
@@ -49,11 +52,17 @@ export function PortContextProvider({ children }: Props) {
     }
   }, [portId, messageHandler])
 
-  const val: ReturnValue = {
+  const val = useMemo<ReturnValue>(() => ({
     port,
     terminalId,
+    tabId,
     isTabActive,
-  }
+  }), [
+    port,
+    terminalId,
+    tabId,
+    isTabActive,
+  ])
   return (
     <PortContext.Provider value={val}>
       {children}
@@ -63,8 +72,8 @@ export function PortContextProvider({ children }: Props) {
 
 function usePort() {
   const ctx = useContext(PortContext)
-  if (!ctx) {
-    throw new Error('usePort must be used withing PortContextProvider')
+  if (ctx === undefined) {
+    throw new Error('usePort must be used within PortContextProvider')
   }
   return ctx
 }

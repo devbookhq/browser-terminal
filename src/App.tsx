@@ -1,20 +1,19 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { h, Fragment } from 'preact'
-import { useState, useRef } from 'preact/hooks'
+import { useState, useRef, useEffect } from 'preact/hooks'
 import '../styles/app.css'
 
 import Terminal, { Handler } from './Terminal'
 import useOnClickOutside from './useOnClickOutside'
 
-import {
-  PortContextProvider,
-} from './usePort'
+import usePort from './usePort'
 
 export interface Props {
 }
 
-function TerminalButton({
+function App({
 }: Props) {
+  const { isTabActive, terminalId, tabId } = usePort()
   const terminalWrapperRef = useRef<HTMLDivElement | null>(null)
   const terminalRef = useRef<Handler>(null)
   const [isHidden, setIsHidden] = useState(true)
@@ -22,33 +21,35 @@ function TerminalButton({
   function handleClickOutside() {
     setIsHidden(true)
   }
+
   function onTerminalButtonClick() {
     setIsHidden(val => !val)
     //terminalRef?.current?.handleInput('')
+    terminalRef.current?.handleInput('\x0C')
     setTimeout(() => {
       terminalRef.current?.focus()
     }, 150)
   }
 
-  //useEventListener('keydown', e => {
-  //  if (e.code === 'Backquote') {
-  //    setIsHidden(false)
-  //    setTimeout(() => {
-  //      terminalRef.current?.focus()
-  //    }, 150)
-  //  }
-  //})
-
   useOnClickOutside(terminalWrapperRef, handleClickOutside)
 
   return (
-    <PortContextProvider>
+    <Fragment>
       <div className={`
         ${isHidden ? 'dbk-app dbk-app-hidden' : 'dbk-app'}
       `}
         ref={terminalWrapperRef}
       >
         <div className="dbk-header">
+          <div className="dbk-header-section">
+            tabID: {tabId}
+          </div>
+          <div className="dbk-header-section">
+            terminalID: {terminalId}
+          </div>
+          <div className="dbk-header-section">
+            isTabActive: {isTabActive ? 'true' : 'false'}
+          </div>
         </div>
 
         <div className="dbk-terminal">
@@ -67,11 +68,11 @@ function TerminalButton({
           "
           onClick={onTerminalButtonClick}
         >
-          {`>_`}
+          {`>_ (${terminalId};${isTabActive})`}
         </button>
       </div>
-    </PortContextProvider>
+    </Fragment>
   )
 }
 
-export default TerminalButton
+export default App
