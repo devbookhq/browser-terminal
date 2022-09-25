@@ -13,6 +13,7 @@ export interface Props {
 
 function App({
 }: Props) {
+  const [size, setSize] = useState<{ rows: number, cols: number }>()
   const { isTabActive, terminalId, tabId } = usePort()
   const terminalWrapperRef = useRef<HTMLDivElement | null>(null)
   const terminalRef = useRef<Handler>(null)
@@ -50,6 +51,11 @@ function App({
           <div className="dbk-header-section">
             isTabActive: {isTabActive ? 'true' : 'false'}
           </div>
+          <div className="dbk-header-section">
+            rows: {size?.rows}
+            {', '}
+            cols: {size?.cols}
+          </div>
         </div>
 
         <div className="dbk-terminal">
@@ -57,6 +63,7 @@ function App({
             ref={terminalRef}
             onRunningCmdChange={console.log}
             autofocus={true}
+            onSizeChange={setSize}
           />
         </div>
       </div>

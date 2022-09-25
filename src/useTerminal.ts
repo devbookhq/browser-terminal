@@ -11,63 +11,9 @@ import {
   ChildProcess,
 } from '@devbookhq/sdk'
 
-import { createDeferredPromise } from './createDeferredPromise'
 import usePort from './usePort'
 
 export const newLine = '\n'
-
-export async function createTerminalProcess(
-  cmd: string,
-  manager: TerminalManager,
-  onData?: (data: string) => void
-) {
-  let hasStarted = false
-  let isRunning = false
-
-  const {
-    resolve,
-    promise: finished,
-  } = createDeferredPromise()
-
-  const finish = () => {
-    isRunning = false
-    resolve()
-  }
-
-  const term = await manager.createSession({
-    onData: (data) => onData?.(data),
-    onChildProcessesChange: (cps) => {
-      if (cps.length > 0) {
-        hasStarted = true
-        isRunning = true
-      } else {
-        if (hasStarted) {
-          finish()
-        }
-      }
-    },
-    size: { cols: 9999, rows: 9999 },
-  })
-
-  await term.sendData(cmd + newLine)
-
-  // Ensure that even if the command finished so quickly that it was not reported from the env this function finishes.
-  setTimeout(() => {
-    hasStarted = true
-    if (!isRunning) {
-      finish()
-    }
-  }, 10_000)
-
-  return {
-    finished,
-    sendData: term.sendData,
-    destroy: () => {
-      term.destroy()
-      finish()
-    }
-  }
-}
 
 interface SessionDataProxy {
   onDataHandler?: (data: string) => void
@@ -81,6 +27,7 @@ export interface Opts {
 function useTerminal({
   terminalManager,
 }: Opts) {
+  const [size, setSize] = useState<{ rows: number, cols: number }>()
   const { isTabActive, terminalId } = usePort()
   const [sessionDataProxy, setSessionDataProxy] = useState<SessionDataProxy>()
   const [terminal, setTerminal] = useState<XTermTerminal>()
@@ -173,7 +120,7 @@ function useTerminal({
 
         term.onData((data) => session.sendData(data))
         term.onResize((size) => {
-          console.log('onResize', { size })
+          setSize(size)
           session.resize(size)
         })
 
@@ -236,6 +183,7 @@ function useTerminal({
     isCmdRunning: !!runningProcessID,
     runCmd,
     childProcesses,
+    size,
   }), [
     terminal,
     childProcesses,
@@ -245,6 +193,7 @@ function useTerminal({
     stopCmd,
     runCmd,
     terminalSession,
+    size,
   ])
 }
 

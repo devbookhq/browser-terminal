@@ -35,6 +35,7 @@ export interface Props {
   onStart?: (handler: Omit<Handler, 'runCmd' | 'stopCmd'>) => (Promise<void> | void)
   onRunningCmdChange: (state: CodeSnippetExecState) => void
   isHidden?: boolean
+  onSizeChange: ({rows, cols}: { rows: number, cols: number }) => void
 }
 
 const Terminal = forwardRef<Handler, Props>(({
@@ -42,6 +43,7 @@ const Terminal = forwardRef<Handler, Props>(({
   autofocus,
   onRunningCmdChange,
   isHidden,
+  onSizeChange,
 }, ref) => {
   const {
     session,
@@ -57,6 +59,7 @@ const Terminal = forwardRef<Handler, Props>(({
     runCmd,
     isCmdRunning,
     stopCmd,
+    size,
   } = useTerminal({ terminalManager: session?.terminal })
 
   const onResize = useCallback(() => {
@@ -84,6 +87,11 @@ const Terminal = forwardRef<Handler, Props>(({
   ])
 
   const { ref: sizeRef } = useResizeDetector({ onResize })
+
+  useEffect(() => {
+    if (!size) return
+    onSizeChange(size)
+  }, [size])
 
   useImperativeHandle(ref, () => ({
     handleInput,
