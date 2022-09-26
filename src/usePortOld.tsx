@@ -70,6 +70,9 @@ export function PortContextProvider({ children }: Props) {
   )
 }
 
+// TODO: Ability to pass an onInit function that gets called when we
+// receive terminalId. This way a component can send the initial 'CTRL+L'
+// to the terminal.
 function usePort() {
   const ctx = useContext(PortContext)
   if (ctx === undefined) {

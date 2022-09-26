@@ -11,7 +11,9 @@ import {
   ChildProcess,
 } from '@devbookhq/sdk'
 
-import usePort from './usePort'
+// import usePort from './usePort'
+import usePort from './PortProvider'
+import * as portMessage from './portMessage'
 
 export const newLine = '\n'
 
@@ -28,7 +30,6 @@ function useTerminal({
   terminalManager,
 }: Opts) {
   const [size, setSize] = useState<{ rows: number, cols: number }>()
-  const { isTabActive, terminalId } = usePort()
   const [sessionDataProxy, setSessionDataProxy] = useState<SessionDataProxy>()
   const [terminal, setTerminal] = useState<XTermTerminal>()
   const [terminalSession, setTerminalSession] = useState<TerminalSession>()
@@ -50,19 +51,34 @@ function useTerminal({
 
   const stopCmd = useCallback(() => {
     if (!runningProcessID) return
-
     terminalManager?.killProcess(runningProcessID)
   }, [
     runningProcessID,
     terminalManager,
   ])
 
+  const portMessageHandler = useCallback((msg: portMessage.Message) => {
+    console.log('PORT MESSAGE HANDLER:', msg.type, { terminalSession })
+    if (msg.type === portMessage.Type.RegisterResponse) {
+      terminalSession?.sendData('\x0C')
+    }
+  }, [terminalSession])
+
+  const { isTabActive, terminalID: terminalId } = usePort({
+    onMessage: portMessageHandler,
+  })
+
   useEffect(function resizeTerminalOnActiveTab() {
     if (!isTabActive) return
     if (!terminal) return
+    if (!terminalSession) return
     console.log('Resizing terminal', { cols: terminal.cols, rows: terminal.rows })
-    terminal.resize(terminal.cols, terminal.rows)
-  }, [isTabActive, terminal])
+    terminalSession.resize({ cols: terminal.cols, rows: terminal.rows })
+  }, [
+    isTabActive,
+    terminal,
+    terminalSession,
+  ])
 
   useEffect(function toggleTerminalWriteDataOnActiveTab() {
     if (!isTabActive) {
@@ -81,6 +97,7 @@ function useTerminal({
 
   useEffect(function initialize() {
     async function init() {
+      if (!terminalId) return
       if (!terminalManager) return
 
       setRunningProcessCmd(undefined)
@@ -110,23 +127,25 @@ function useTerminal({
         }
 
         console.log('Creating new terminal session', terminalId)
-        const session = await terminalManager.createSession({
+        const tsession = await terminalManager.createSession({
           terminalID: terminalId,
           //onData: (data) => term.write(data),
           onData: data => newProxy.onData(data),
           onChildProcessesChange: setChildProcesss,
           size: { cols: term.cols, rows: term.rows },
         })
+        console.log('SENDING CTRL+L')
+        tsession.sendData('\x0C')
 
-        term.onData((data) => session.sendData(data))
+        term.onData((data) => tsession.sendData(data))
         term.onResize((size) => {
           setSize(size)
-          session.resize(size)
+          tsession.resize(size)
         })
 
         setSessionDataProxy(newProxy)
         setTerminal(term)
-        setTerminalSession(session)
+        setTerminalSession(tsession)
         setError(undefined)
         setIsLoading(false)
 
@@ -143,10 +162,7 @@ function useTerminal({
       }
     }
 
-    console.log('Terminal ID', { terminalId })
-    if (!terminalId) return
     const disposePromise = init()
-
     return () => {
       setChildProcesss([])
       setRunningProcessCmd(undefined)

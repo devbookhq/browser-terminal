@@ -6,7 +6,8 @@ import '../styles/app.css'
 import Terminal, { Handler } from './Terminal'
 import useOnClickOutside from './useOnClickOutside'
 
-import usePort from './usePort'
+//import usePort from './usePort'
+import usePort from './PortProvider'
 
 export interface Props {
 }
@@ -14,7 +15,7 @@ export interface Props {
 function App({
 }: Props) {
   const [size, setSize] = useState<{ rows: number, cols: number }>()
-  const { isTabActive, terminalId, tabId } = usePort()
+  const { isTabActive, terminalID: terminalId, tabID: tabId } = usePort()
   const terminalWrapperRef = useRef<HTMLDivElement | null>(null)
   const terminalRef = useRef<Handler>(null)
   const [isHidden, setIsHidden] = useState(true)
@@ -26,7 +27,7 @@ function App({
   function onTerminalButtonClick() {
     setIsHidden(val => !val)
     //terminalRef?.current?.handleInput('')
-    terminalRef.current?.handleInput('\x0C')
+    //terminalRef.current?.handleInput('\x0C')
     setTimeout(() => {
       terminalRef.current?.focus()
     }, 150)
