@@ -21,7 +21,7 @@ export interface Props {
 }
 
 export interface Port {
-  port: chrome.runtime.Port
+  port?: chrome.runtime.Port
   terminalId?: string
   tabId?: number
   isTabActive?: boolean
@@ -51,15 +51,12 @@ export function PortContextProvider({ children }: Props) {
     onListenerAdded: triggerRegistration,
   })
 
-  const value = useMemo(() => {
-    if (!port) return
-    return {
-      port,
-      terminalId,
-      tabId,
-      isTabActive,
-    }
-  }, [
+  const value = useMemo(() => ({
+    port,
+    terminalId,
+    tabId,
+    isTabActive,
+  }), [
     port,
     terminalId,
     tabId,
