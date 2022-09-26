@@ -29,6 +29,7 @@ export interface Opts {
 function useTerminal({
   terminalManager,
 }: Opts) {
+  const { isTabActive, terminalID: terminalId } = usePort()
   const [size, setSize] = useState<{ rows: number, cols: number }>()
   const [sessionDataProxy, setSessionDataProxy] = useState<SessionDataProxy>()
   const [terminal, setTerminal] = useState<XTermTerminal>()
@@ -56,17 +57,6 @@ function useTerminal({
     runningProcessID,
     terminalManager,
   ])
-
-  const portMessageHandler = useCallback((msg: portMessage.Message) => {
-    console.log('PORT MESSAGE HANDLER:', msg.type, { terminalSession })
-    if (msg.type === portMessage.Type.RegisterResponse) {
-      terminalSession?.sendData('\x0C')
-    }
-  }, [terminalSession])
-
-  const { isTabActive, terminalID: terminalId } = usePort({
-    onMessage: portMessageHandler,
-  })
 
   useEffect(function resizeTerminalOnActiveTab() {
     if (!isTabActive) return
