@@ -41,6 +41,13 @@ function App({
         ${isHidden ? 'dbk-app dbk-app-hidden' : 'dbk-app'}
       `}
         ref={terminalWrapperRef}
+        onScroll={e => {
+          console.log('SCROLL')
+          e.preventDefault()
+          e.stopPropagation()
+          e.stopImmediatePropagation()
+          e.cancelBubble = true
+        }}
       >
         <div className="dbk-header">
           <div className="dbk-header-section">

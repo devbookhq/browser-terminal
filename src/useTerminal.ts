@@ -112,6 +112,7 @@ function useTerminal({
         const newProxy: SessionDataProxy = {
           onDataHandler: data => term.write(data),
           onData: (data: string) => {
+            console.log('proxy onData', { data, onDataHandler: newProxy.onDataHandler })
             newProxy.onDataHandler?.(data)
           },
         }
@@ -124,7 +125,8 @@ function useTerminal({
           onChildProcessesChange: setChildProcesss,
           size: { cols: term.cols, rows: term.rows },
         })
-        console.log('SENDING CTRL+L')
+        // This makes sure that the terminal will have initial prompt.
+        // It is the same as pressing ctrl+l.
         tsession.sendData('\x0C')
 
         term.onData((data) => tsession.sendData(data))

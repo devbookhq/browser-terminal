@@ -171,9 +171,7 @@ const Terminal = forwardRef<Handler, Props>(({
         * the `w-full` and `h-full`.
         */}
         <div
-          className="
-            dbk-terminal-el
-          "
+          className="dbk-terminal-el"
           ref={assignRefs}
         />
       </div>

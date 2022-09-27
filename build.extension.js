@@ -1,4 +1,6 @@
-const { build } = require('esbuild')
+import { build } from 'esbuild'
+//const { build } = require('esbuild')
+
 
 build({
   tsconfig: './tsconfig.extension.json',

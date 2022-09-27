@@ -1,7 +1,14 @@
+//
+//
+//
+// DEVELOPMENT BUILD //
+//
+//
+//
+
 import typescript from 'rollup-plugin-typescript2'
 import commonjs from '@rollup/plugin-commonjs'
 import postcss from 'rollup-plugin-postcss'
-import { terser } from 'rollup-plugin-terser'
 import resolve from '@rollup/plugin-node-resolve'
 import alias from '@rollup/plugin-alias'
 
@@ -9,13 +16,8 @@ import pkg from './package.json'
 
 export default {
   input: pkg.source,
-  //output: [
-  //  {
-  //    file: pkg.browser,
-  //    format: 'iife',
-  //    sourcemap: false,
-  //  },
-  //],
+  treeshake: false,
+  perf: true,
   output: {
     inlineDynamicImports: true,
     dir: 'dist',
@@ -29,7 +31,7 @@ export default {
         insertAt: 'top',
       },
       config: {
-        path: './postcss.config.js',
+        path: './postcss.config.cjs',
       },
     }),
     typescript({
@@ -49,14 +51,5 @@ export default {
       strictRequires: true,
       transformMixedEsModules: true,
     }),
-    terser({
-      format: {
-        comments: false,
-        wrap_iife: true,
-        ascii_only: true,
-      },
-      ecma: 6,
-    }),
-    // sizes(),
   ],
 }
