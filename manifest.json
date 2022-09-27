@@ -20,7 +20,7 @@
     "storage",
     "scripting"
   ],
-  "host_permissions": ["http://localhost:8010/*"],
+  "host_permissions": ["http://localhost:49982/*"],
   "content_security_policy": {
     "extension_pages": "script-src http://localhost;  object-src http://localhost;"
   }

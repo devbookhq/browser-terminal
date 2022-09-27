@@ -1,9 +1,10 @@
 ---
 - show "install devbookd" if not able to connect to devbookd
 - maybe remove the always visible button for opening a terminal and instead open the terminal by clicking on the extension button
-- resizing terminal
+- allow resizing terminal's height by dragging
 - share feedback/report bug button
 - finalize private beta docs
+- BUG: fix newlines on resize() call
 - render in iframe for security
 - publish to chrome web store
 ---

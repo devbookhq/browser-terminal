@@ -34,7 +34,7 @@ let term: TerminalSession | undefined
 const portManager = new PortManager()
 
 function pingDevbookd() {
-  return fetch('http://127.0.0.1:8010/ping', {
+  return fetch('http://127.0.0.1:49982/ping', {
     method: 'GET',
   })
 }
