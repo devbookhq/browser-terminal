@@ -18,7 +18,7 @@ jobs:
       - name: Install deps
         run: npm ci
       - name: Build
-        run: npm run build
+        run: npm run build:prod
       - name: Archive build
         run: npm run archive
       - name: Release
