@@ -1,6 +1,6 @@
-import { build } from 'esbuild'
-//const { build } = require('esbuild')
+// Builds the extension background script
 
+import { build } from 'esbuild'
 
 build({
   tsconfig: './tsconfig.extension.json',
